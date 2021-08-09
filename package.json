@@ -1,0 +1,33 @@
+{
+  "name": "icql-dba-vars",
+  "version": "0.0.1",
+  "description": "add JSON variables to an ICQL/DBA instance",
+  "main": "lib/main.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo see 'https://github.com/loveencounterflow/hengist/tree/master/dev/icql-dba-vars'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loveencounterflow/icql-dba-vars.git"
+  },
+  "keywords": [
+    "sql",
+    "sqlite",
+    "db"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/loveencounterflow/icql-dba-vars/issues"
+  },
+  "homepage": "https://github.com/loveencounterflow/icql-dba-vars#readme",
+  "dependencies": {
+    "cnd": "^9.2.2",
+    "icql-dba": "7.2.0",
+    "intertype": "^7.6.7",
+    "letsfreezethat": "^3.1.0"
+  }
+}
