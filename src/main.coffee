@@ -25,6 +25,8 @@ SQL                       = String.raw
   freeze }                = require 'letsfreezethat'
 E                         = require './errors'
 { Dba, }                  = require 'icql-dba'
+def                       = Object.defineProperty
+
 
 #===========================================================================================================
 ### RegEx from https://github.com/loveencounterflow/paragate/blob/master/src/htmlish.grammar.coffee with
@@ -32,7 +34,7 @@ the additional exlusion of `+`, `-`, ':' which are used in TagExes ###
 name_re = /^[^-+:\s!?=\{\[\(<\/>\)\]\}'"]+$/u
 
 #===========================================================================================================
-types.declare 'dbatags_constructor_cfg', tests:
+types.declare 'dbv_constructor_cfg', tests:
   '@isa.object x':        ( x ) -> @isa.object x
   'x.prefix is a prefix': ( x ) ->
     return false unless @isa.text x.prefix
@@ -41,23 +43,25 @@ types.declare 'dbatags_constructor_cfg', tests:
 
 #-----------------------------------------------------------------------------------------------------------
 types.defaults =
-  dbatags_constructor_cfg:
+  dbv_constructor_cfg:
     dba:        null
     prefix:     'v_'
 
 #===========================================================================================================
 class @Dbv
+
   #---------------------------------------------------------------------------------------------------------
   constructor: ( cfg ) ->
-    validate.dbatags_constructor_cfg @cfg = { types.defaults.dbatags_constructor_cfg..., cfg..., }
+    validate.dbv_constructor_cfg @cfg = { types.defaults.dbv_constructor_cfg..., cfg..., }
+    debug '^4877^', @cfg
     #.......................................................................................................
-    if @cfg.dba?
-      @dba  = @cfg.dba
-      delete @cfg.dba
-    else
-      @dba  = new Dba()
-    #.......................................................................................................
-    @cfg              = freeze @cfg
+    dba  = if @cfg.dba? then @cfg.dba else new Dba()
+    def @, 'dba', { enumerable: false, value: dba, }
+    delete @cfg.dba
+    @cfg = freeze @cfg
+    @_create_db_structure()
+    @_compile_sql()
+    # @_create_sql_functions()
     return undefined
 
   #---------------------------------------------------------------------------------------------------------
@@ -73,7 +77,7 @@ class @Dbv
   #---------------------------------------------------------------------------------------------------------
   _compile_sql: ->
     prefix = @cfg.prefix
-    @sql =
+    sql =
       get: SQL"""
         select value from #{prefix}variables
           where key = $key
@@ -81,37 +85,38 @@ class @Dbv
       set: SQL"""
         insert into #{prefix}variables ( key, value )
           values ( $key, $value )
-          on conflict update set value = $value;"""
+          on conflict do update set value = $value;"""
+    def @, 'sql', { enumerable: false, value: sql, }
     return null
 
-  #---------------------------------------------------------------------------------------------------------
-  _create_sql_functions: ->
-    prefix  = @cfg.prefix
-    @f      = {}
-    #.......................................................................................................
-    @dba.create_function
-      name:           prefix + 'get'
-      call:           ( key ) => @get key
-    #.......................................................................................................
-    @dba.create_table_function
-      name:           prefix + 'get_many'
-      columns:        [ 'element', ]
-      parameters:     [ 'key', ]
-      rows:           ( key ) => @get_many key
-    #.......................................................................................................
-    @dba.create_function
-      name:           prefix + 'set'
-      call:           ( key ) => @set key
-    #.......................................................................................................
-    return null
+  # #---------------------------------------------------------------------------------------------------------
+  # _create_sql_functions: ->
+  #   prefix  = @cfg.prefix
+  #   @f      = {}
+  #   #.......................................................................................................
+  #   @dba.create_function
+  #     name:           prefix + 'get'
+  #     call:           ( key ) => @get key
+  #   #.......................................................................................................
+  #   @dba.create_table_function
+  #     name:           prefix + 'get_many'
+  #     columns:        [ 'element', ]
+  #     parameters:     [ 'key', ]
+  #     rows:           ( ( key ) -> yield from @get_many key ).bind @
+  #   #.......................................................................................................
+  #   @dba.create_function
+  #     name:           prefix + 'set'
+  #     call:           ( key ) => @set key
+  #   #.......................................................................................................
+  #   return null
 
   #---------------------------------------------------------------------------------------------------------
   get:        ( key ) -> JSON.parse @dba.first_value @dba.query @sql.get, { key, }
-  get_many:   ( key ) -> JSON.parse @dba.first_value @dba.query @sql.get, { key, }
+  # get_many:   ( key ) -> JSON.parse @dba.first_value @dba.query @sql.get, { key, }
 
   #---------------------------------------------------------------------------------------------------------
   set: ( key, value ) ->
-    @dba.run @sql.set { key, value: ( JSON.stringify value ), }
+    @dba.run @sql.set, { key, value: ( JSON.stringify value ), }
     return value
 
 
