@@ -5,7 +5,7 @@
 ############################################################################################################
 CND                       = require 'cnd'
 rpr                       = CND.rpr
-badge                     = 'ICQL-DBA-TAGS'
+badge                     = 'ICQL-DBA-VARS'
 debug                     = CND.get_logger 'debug',     badge
 warn                      = CND.get_logger 'warn',      badge
 info                      = CND.get_logger 'info',      badge
@@ -53,7 +53,6 @@ class @Dbv
   #---------------------------------------------------------------------------------------------------------
   constructor: ( cfg ) ->
     validate.dbv_constructor_cfg @cfg = { types.defaults.dbv_constructor_cfg..., cfg..., }
-    debug '^4877^', @cfg
     #.......................................................................................................
     dba  = if @cfg.dba? then @cfg.dba else new Dba()
     def @, 'dba', { enumerable: false, value: dba, }
