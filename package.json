@@ -1,6 +1,6 @@
 {
   "name": "icql-dba-vars",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "add JSON variables to an ICQL/DBA instance",
   "main": "lib/main.js",
   "directories": {
