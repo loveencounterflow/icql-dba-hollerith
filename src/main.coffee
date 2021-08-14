@@ -35,11 +35,12 @@ name_re = /^[^-+:\s!?=\{\[\(<\/>\)\]\}'"]+$/u
 
 #===========================================================================================================
 types.declare 'dbv_constructor_cfg', tests:
-  '@isa.object x':        ( x ) -> @isa.object x
-  'x.prefix is a prefix': ( x ) ->
+  '@isa.object x':                ( x ) -> @isa.object x
+  'x.prefix is a prefix':         ( x ) ->
     return false unless @isa.text x.prefix
     return true if x.prefix is ''
     return ( /^[_a-z][_a-z0-9]*$/ ).test x.prefix
+  "( @type_of x.dba ) is 'dba'":  ( x ) -> ( @type_of x.dba ) is 'dba'
 
 #-----------------------------------------------------------------------------------------------------------
 types.defaults =
@@ -54,8 +55,7 @@ class @Dbv
   constructor: ( cfg ) ->
     validate.dbv_constructor_cfg @cfg = { types.defaults.dbv_constructor_cfg..., cfg..., }
     #.......................................................................................................
-    dba  = if @cfg.dba? then @cfg.dba else new Dba()
-    def @, 'dba', { enumerable: false, value: dba, }
+    def @, 'dba', { enumerable: false, value: cfg.dba, }
     delete @cfg.dba
     @cfg = freeze @cfg
     @_create_db_structure()
