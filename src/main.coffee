@@ -25,7 +25,7 @@ SQL                       = String.raw
   freeze }                = require 'letsfreezethat'
 E                         = require './errors'
 { Dba, }                  = require 'icql-dba'
-def                       = Object.defineProperty
+guy                       = require 'guy'
 
 
 #===========================================================================================================
@@ -55,7 +55,7 @@ class @Dbv
   constructor: ( cfg ) ->
     validate.dbv_constructor_cfg @cfg = { types.defaults.dbv_constructor_cfg..., cfg..., }
     #.......................................................................................................
-    def @, 'dba', { enumerable: false, value: cfg.dba, }
+    guy.props.def @, 'dba', { enumerable: false, value: cfg.dba, }
     delete @cfg.dba
     @cfg = freeze @cfg
     @_create_db_structure()
@@ -85,7 +85,7 @@ class @Dbv
         insert into #{prefix}variables ( key, value )
           values ( $key, $value )
           on conflict do update set value = $value;"""
-    def @, 'sql', { enumerable: false, value: sql, }
+    guy.props.def @, 'sql', { enumerable: false, value: sql, }
     return null
 
   # #---------------------------------------------------------------------------------------------------------
