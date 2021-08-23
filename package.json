@@ -1,17 +1,17 @@
 {
-  "name": "icql-dba-vars",
-  "version": "2.0.1",
-  "description": "add JSON variables to an ICQL/DBA instance",
+  "name": "icql-dba-vnr",
+  "version": "0.0.1",
+  "description": "use vectorial numbers (VNRs) in SQLite to allow for arbitrary many interstital elements",
   "main": "lib/main.js",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo see 'https://github.com/loveencounterflow/hengist/tree/master/dev/icql-dba-vars'"
+    "test": "echo see 'https://github.com/loveencounterflow/hengist/tree/master/dev/icql-dba-vnr'"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/loveencounterflow/icql-dba-vars.git"
+    "url": "git+https://github.com/loveencounterflow/icql-dba-vnr.git"
   },
   "keywords": [
     "sql",
@@ -21,19 +21,20 @@
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/loveencounterflow/icql-dba-vars/issues"
+    "url": "https://github.com/loveencounterflow/icql-dba-vnr/issues"
   },
-  "homepage": "https://github.com/loveencounterflow/icql-dba-vars#readme",
+  "homepage": "https://github.com/loveencounterflow/icql-dba-vnr#readme",
   "dependencies": {
     "cnd": "^9.2.2",
     "guy": "^1.0.0",
+    "hollerith-codec": "^3.1.1",
     "intertype": "^7.6.7",
     "letsfreezethat": "^3.1.0"
   },
   "devDependencies": {
-    "icql-dba": "^7.2.0"
+    "icql-dba": "^8.1.0"
   },
   "peerDependencies": {
-    "icql-dba": "^7.2.0"
+    "icql-dba": "^8.1.0"
   }
 }
