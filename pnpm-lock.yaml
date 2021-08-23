@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   cnd: ^9.2.2
+  datom: ^8.0.3
   guy: ^1.0.0
   hollerith-codec: ^3.1.1
   icql-dba: ^8.1.0
@@ -10,6 +11,7 @@ specifiers:
 
 dependencies:
   cnd: 9.2.2
+  datom: 8.0.3
   guy: 1.0.0
   hollerith-codec: 3.1.1
   intertype: 7.6.7
@@ -80,7 +82,6 @@ packages:
   /cnd/9.2.1:
     resolution: {integrity: sha512-JszZtSlOCxkIvNPKpw1PmIcQUjYO+pBqVoKVH2STHLtG4JHHJ1NHowv39lhyxzlPxUTZk7pZ3qO7CfrfJ8ZSKw==}
     hasBin: true
-    dev: true
 
   /cnd/9.2.2:
     resolution: {integrity: sha512-F+/H+7luk4fZkvN0+MT0I2nwn80YM/EtfMttNUFxENR50XJH4g0KgQevzeyEJ8B6t6l8Tb4Xti6QAksa8DmePA==}
@@ -105,6 +106,25 @@ packages:
       minimist: 1.2.5
     dev: true
 
+  /cupofjoe/0.2.1:
+    resolution: {integrity: sha512-kZHlb3DmPu2jV0rmZvqsGwI8OEy+VEyN+50bUFp95HrD1buun7G9BVpf286UiL+sNfjXEn4EdbAFHASkxibSHQ==}
+    dependencies:
+      cnd: 9.2.1
+      intertype: 7.6.5
+      multimix: 5.0.0
+    dev: false
+
+  /datom/8.0.3:
+    resolution: {integrity: sha512-brh+I+TIC89r891ekwWtzaO6zvQu/hgyEdfm3gs8WOF3jJ+nCpwnoF2/96jUZibaKCfFjxpqQbQu3K7/SkA64g==}
+    dependencies:
+      cnd: 9.2.2
+      cupofjoe: 0.2.1
+      emittery: 0.6.0
+      intertype: 7.6.5
+      letsfreezethat: 3.1.0
+      multimix: 5.0.0
+    dev: false
+
   /del/6.0.0:
     resolution: {integrity: sha512-1shh9DQ23L16oXSZKB2JxpL7iMy2E0S9d517ptA1P8iw0alkPtQcrKH7ru31rYtKwF499HkTu+DRzq3TCKDFRQ==}
     engines: {node: '>=10'}
@@ -125,6 +145,11 @@ packages:
     dependencies:
       path-type: 4.0.0
     dev: true
+
+  /emittery/0.6.0:
+    resolution: {integrity: sha512-6EMRGr9KzYWp8DzHFZsKVZBsMO6QhAeHMeHND8rhyBNCHKMLpgW9tZv40bwN3rAIKRS5CxcK8oLRKUJSB9h7yQ==}
+    engines: {node: '>=10'}
+    dev: false
 
   /fast-glob/3.2.7:
     resolution: {integrity: sha512-rYGMRwip6lUMvYD3BTScMwT1HtAs2d71SMv66Vrxs0IekGZEjhM0pcMfjQPnknBt2zeCwQMEupiN02ZP4DiT1Q==}
@@ -252,7 +277,6 @@ packages:
     resolution: {integrity: sha512-763YK3ezLYy9FkX+cTTg/qwGHteqlaTMiec9a2sVAKm7kXp9e7QkzbyYS6u4CcbLxx12L8bcRbe3SFsPeaJCMA==}
     dependencies:
       multimix: 5.0.0
-    dev: true
 
   /intertype/7.6.7:
     resolution: {integrity: sha512-vBgYabqxX3fLa9f0Z3QeXgYszadAGdAHXdLcdQc5ZxZSG5CmbJCdYcudZLYtgmNo8epQag8zzyg7wwx+OD5J8g==}
