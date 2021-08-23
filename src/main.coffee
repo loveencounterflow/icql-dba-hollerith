@@ -28,6 +28,8 @@ E                         = require './errors'
 guy                       = require 'guy'
 { HOLLERITH_CODEC, }      = require 'hollerith-codec/lib/tng'
 { Vnr, }                  = require 'datom/lib/vnr'
+jr                        = JSON.stringify
+jp                        = JSON.parse
 
 
 #===========================================================================================================
@@ -76,34 +78,27 @@ class @Vnr extends Vnr
 
   #---------------------------------------------------------------------------------------------------------
   _compile_sql: ->
-    prefix = @cfg.prefix
-    sql =
-      get: SQL"""
-        select value from #{prefix}variables
-          where key = $key
-          limit 1;"""
-    guy.props.def @, 'sql', { enumerable: false, value: sql, }
+    # prefix = @cfg.prefix
+    # sql =
+    #   f: SQL""
+    # guy.props.def @, 'sql', { enumerable: false, value: sql, }
     return null
 
   #---------------------------------------------------------------------------------------------------------
   _create_sql_functions: ->
     prefix  = @cfg.prefix
     # @f      = {}
-  #   #.......................................................................................................
-  #   @dba.create_function
-  #     name:           prefix + 'get'
-  #     call:           ( key ) => @get key
-  #   #.......................................................................................................
-  #   @dba.create_table_function
-  #     name:           prefix + 'get_many'
-  #     columns:        [ 'element', ]
-  #     parameters:     [ 'key', ]
-  #     rows:           ( ( key ) -> yield from @get_many key ).bind @
-  #   #.......................................................................................................
-  #   @dba.create_function
-  #     name:           prefix + 'set'
-  #     call:           ( key ) => @set key
-  #   #.......................................................................................................
+    #.......................................................................................................
+    @dba.create_function name: prefix + 'advance',      call: ( vnr )           => jr @advance     jp vnr
+    @dba.create_function name: prefix + 'recede',       call: ( vnr )           => jr @recede      jp vnr
+    @dba.create_function name: prefix + 'deepen',       call: ( vnr )           => jr @deepen      jp vnr
+    @dba.create_function name: prefix + 'encode',       call: ( vnr )           =>    @encode      jp vnr
+    @dba.create_function name: prefix + 'cmp_fair',     call: ( a, b )          =>    @cmp_fair    ( jp a ), ( jp b )
+    @dba.create_function name: prefix + 'cmp_partial',  call: ( a, b )          =>    @cmp_partial ( jp a ), ( jp b )
+    @dba.create_function name: prefix + 'cmp_total',    call: ( a, b )          =>    @cmp_total   ( jp a ), ( jp b )
+    @dba.create_function name: prefix + 'new_vnr', varargs: true, call: ( source = null ) => jr @new_vnr jp source
+    # 'sort'
+    #.......................................................................................................
     return null
 
   #---------------------------------------------------------------------------------------------------------
