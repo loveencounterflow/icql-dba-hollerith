@@ -5,7 +5,7 @@
 ############################################################################################################
 CND                       = require 'cnd'
 rpr                       = CND.rpr
-badge                     = 'ICQL-DBA-VARS'
+badge                     = 'ICQL-DBA-VNR'
 debug                     = CND.get_logger 'debug',     badge
 warn                      = CND.get_logger 'warn',      badge
 info                      = CND.get_logger 'info',      badge
@@ -26,15 +26,15 @@ SQL                       = String.raw
 E                         = require './errors'
 { Dba, }                  = require 'icql-dba'
 guy                       = require 'guy'
+{ HOLLERITH_CODEC, }      = require 'hollerith-codec/lib/tng'
+{ Vnr, }                  = require 'datom/lib/vnr'
 
 
 #===========================================================================================================
-### RegEx from https://github.com/loveencounterflow/paragate/blob/master/src/htmlish.grammar.coffee with
-the additional exlusion of `+`, `-`, ':' which are used in TagExes ###
 name_re = /^[^-+:\s!?=\{\[\(<\/>\)\]\}'"]+$/u
 
 #===========================================================================================================
-types.declare 'dbv_constructor_cfg', tests:
+types.declare 'vnr_constructor_cfg', tests:
   '@isa.object x':                ( x ) -> @isa.object x
   'x.prefix is a prefix':         ( x ) ->
     return false unless @isa.text x.prefix
@@ -44,34 +44,35 @@ types.declare 'dbv_constructor_cfg', tests:
 
 #-----------------------------------------------------------------------------------------------------------
 types.defaults =
-  dbv_constructor_cfg:
+  vnr_constructor_cfg:
     dba:        null
-    prefix:     'v_'
+    prefix:     'vnr_'
 
 #===========================================================================================================
-class @Dbv
+class @Vnr extends Vnr
 
   #---------------------------------------------------------------------------------------------------------
   constructor: ( cfg ) ->
-    validate.dbv_constructor_cfg @cfg = { types.defaults.dbv_constructor_cfg..., cfg..., }
+    super()
+    validate.vnr_constructor_cfg @cfg = { types.defaults.vnr_constructor_cfg..., cfg..., }
     #.......................................................................................................
     guy.props.def @, 'dba', { enumerable: false, value: cfg.dba, }
     delete @cfg.dba
     @cfg = freeze @cfg
-    @_create_db_structure()
+    # @_create_db_structure()
     @_compile_sql()
-    # @_create_sql_functions()
+    @_create_sql_functions()
     return undefined
 
-  #---------------------------------------------------------------------------------------------------------
-  _create_db_structure: ->
-    { prefix } = @cfg
-    @dba.execute SQL"""
-      create table if not exists #{prefix}variables (
-          key     text    not null primary key,
-          value   json    not null default 'null' );
-      """
-    return null
+  # #---------------------------------------------------------------------------------------------------------
+  # _create_db_structure: ->
+  #   { prefix } = @cfg
+  #   @dba.execute SQL"""
+  #     create table if not exists #{prefix}variables (
+  #         key     text    not null primary key,
+  #         value   json    not null default 'null' );
+  #     """
+  #   return null
 
   #---------------------------------------------------------------------------------------------------------
   _compile_sql: ->
@@ -81,17 +82,13 @@ class @Dbv
         select value from #{prefix}variables
           where key = $key
           limit 1;"""
-      set: SQL"""
-        insert into #{prefix}variables ( key, value )
-          values ( $key, $value )
-          on conflict do update set value = $value;"""
     guy.props.def @, 'sql', { enumerable: false, value: sql, }
     return null
 
-  # #---------------------------------------------------------------------------------------------------------
-  # _create_sql_functions: ->
-  #   prefix  = @cfg.prefix
-  #   @f      = {}
+  #---------------------------------------------------------------------------------------------------------
+  _create_sql_functions: ->
+    prefix  = @cfg.prefix
+    # @f      = {}
   #   #.......................................................................................................
   #   @dba.create_function
   #     name:           prefix + 'get'
@@ -107,16 +104,20 @@ class @Dbv
   #     name:           prefix + 'set'
   #     call:           ( key ) => @set key
   #   #.......................................................................................................
-  #   return null
+    return null
 
   #---------------------------------------------------------------------------------------------------------
-  get:        ( key ) -> JSON.parse @dba.first_value @dba.query @sql.get, { key, }
-  # get_many:   ( key ) -> JSON.parse @dba.first_value @dba.query @sql.get, { key, }
+  encode: HOLLERITH_CODEC.encode.bind HOLLERITH_CODEC
 
-  #---------------------------------------------------------------------------------------------------------
-  set: ( key, value ) ->
-    @dba.run @sql.set, { key, value: ( JSON.stringify value ), }
-    return value
+
+############################################################################################################
+if module is require.main then do =>
+  # debug '^2378^', require 'datom'
+
+
+
+
+
 
 
 
