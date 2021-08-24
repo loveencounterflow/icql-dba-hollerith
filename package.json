@@ -1,7 +1,7 @@
 {
   "name": "icql-dba-vnr",
   "version": "0.0.1",
-  "description": "use vectorial numbers (VNRs) in SQLite to allow for arbitrary many interstital elements",
+  "description": "use vectorial numbers (VNRs) in SQLite to allow for arbitrary many interstitial elements",
   "main": "lib/main.js",
   "directories": {
     "lib": "lib"
