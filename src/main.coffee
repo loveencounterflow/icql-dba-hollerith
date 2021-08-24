@@ -126,6 +126,7 @@ class @Vnr extends Vnr
   alter_table: ( cfg ) ->
     ### TAINT make `unique` configurable ###
     ### TAINT make `virtual`/`stored` configurable ###
+    ### TAINT include table name in index name ###
     validate.vnr_alter_table_cfg cfg = { types.defaults.vnr_alter_table_cfg..., cfg..., }
     { schema
       table_name
