@@ -96,8 +96,11 @@
   * observe that all BLOBs in the above are of equal length. This is a restriction of the [`better-sqlite3`
     API](https://github.com/JoshuaWise/better-sqlite3/blob/master/docs/api.md) which sadly is missing a way
     to [define one's own collations / `cmp` functions](https://sqlite.org/c3ref/create_collation.html)
-
-
+  * While a VNR's *elements* are (after adjustments) encoded with `Buffer.writeUInt32BE()` and so can each
+    cover a range from `-0x80000000` to `+0x7fffffff` (`-2_147_483_648` to `2_147_483_647`, meaning there's
+    place for four billion of them),
+  * the *length* of VNRs is restricted by the BLOBs having a finite constant length. In the above, we
+    arranged for five places per VNR which may or may not be enough for a given use case.
 
 * Links
   * [VNRs](https://github.com/loveencounterflow/datom/blob/master/src/vnr.coffee)
