@@ -23,7 +23,7 @@
     * e.g. you store lines of a textfile as
       * `{ nr: 1, text: 'helo world', }`
       * `{ nr: 2, text: 'fancy stuff here', }`
-      * `{ nr: 3, text: 'that's all', }`
+      * `{ nr: 3, text: 'that\'s all', }`
     * say you want to transform that to a one-word-per-line format *in the same table*; now you have
       * `{ nr: 1, text: 'helo world', }`
       * `{ nr: ?, text: 'helo', }`
@@ -32,14 +32,14 @@
       * `{ nr: ?, text: 'fancy', }`
       * `{ nr: ?, text: 'stuff', }`
       * `{ nr: ?, text: 'here', }`
-      * `{ nr: 3, text: 'that's all', }`
+      * `{ nr: 3, text: 'that\'s all', }`
       * `{ nr: ?, text: 'that's', }`
       * `{ nr: ?, text: 'all', }`
     * For that to work, you'd have to (1) mark the orginal records as processed (not covered here), and (2)
       find a way to enumerate the new lines such that they are correctly ordered.
     * What's more, wouldn't it be great if the enumeration could somehow preserve the origin of each new
       record?
-    * We *could* just using consecutive numbers but then we'd have to renumber all entries whenever a single
+    * We *could* just use consecutive numbers but then we'd have to renumber all entries whenever a single
       record got added somewhere in the middle. One could also use floating point numbers which gets messy
       soon.
     * Instead if we converted the `nr` field to a vector of numbers, we could do the following:
@@ -50,8 +50,8 @@
       * `{ vnr: [ 2, 1, ], text: 'fancy', }`
       * `{ vnr: [ 2, 2, ], text: 'stuff', }`
       * `{ vnr: [ 2, 3, ], text: 'here', }`
-      * `{ vnr: [ 3,    ], text: 'that's all', }`
-      * `{ vnr: [ 3, 1, ], text: 'that's', }`
+      * `{ vnr: [ 3,    ], text: 'that\'s all', }`
+      * `{ vnr: [ 3, 1, ], text: 'that\'s', }`
       * `{ vnr: [ 3, 2, ], text: 'all', }`
     * As it stands, we can store the VNRs as JSON (that is, as texts as far as SQLite is concerned).
       However, that is not bound to give us the intended because the lexicographic sorting of
@@ -66,13 +66,31 @@
         add column vnr_blob blob generated always as ( vnr_encode( vnr ) ) virtual not null;
       ```
 
-    * This field is generated but not stored, meaning it will be auto-generated on each `select` that
-      includes the field. That sounds inefficient—and it would be, were it not for an index we also add:
+    * The `vnr_blob` field is generated but not stored, meaning it will be re-generated on each `select`
+      that includes it. That sounds inefficient—and it would be, were it not for an index we also add:
 
       ```sql
       create unique index myfiles_vnr_blob_idx
         on myfiles ( vnr_encode( vnr ) );
       ```
+    * issuing `select * from myfiles order by vnr_blob;` now gives us this display:
+    ```
+    ┌──────────────────┬───────┬────────────────────────────────────────────────────────────────────┐
+    │text              │vnr    │vnr_blob                                                            │
+    ├──────────────────┼───────┼────────────────────────────────────────────────────────────────────┤
+    │helo world        │[1]    │<Buffer 80 00 00 01 80 00 00 00 80 00 00 00 80 00 00 00 80 00 00 00>│
+    │helo              │[1,1]  │<Buffer 80 00 00 01 80 00 00 01 80 00 00 00 80 00 00 00 80 00 00 00>│
+    │world             │[1,2]  │<Buffer 80 00 00 01 80 00 00 02 80 00 00 00 80 00 00 00 80 00 00 00>│
+    │fancy stuff here  │[2]    │<Buffer 80 00 00 02 80 00 00 00 80 00 00 00 80 00 00 00 80 00 00 00>│
+    │fancy             │[2,1]  │<Buffer 80 00 00 02 80 00 00 01 80 00 00 00 80 00 00 00 80 00 00 00>│
+    │stuff             │[2,2]  │<Buffer 80 00 00 02 80 00 00 02 80 00 00 00 80 00 00 00 80 00 00 00>│
+    │here              │[2,3]  │<Buffer 80 00 00 02 80 00 00 03 80 00 00 00 80 00 00 00 80 00 00 00>│
+    │that's all        │[3]    │<Buffer 80 00 00 03 80 00 00 00 80 00 00 00 80 00 00 00 80 00 00 00>│
+    │that's            │[3,1]  │<Buffer 80 00 00 03 80 00 00 01 80 00 00 00 80 00 00 00 80 00 00 00>│
+    │all               │[3,2]  │<Buffer 80 00 00 03 80 00 00 02 80 00 00 00 80 00 00 00 80 00 00 00>│
+    └──────────────────┴───────┴────────────────────────────────────────────────────────────────────┘
+    ```
+
 
 * Links
   * [VNRs](https://github.com/loveencounterflow/datom/blob/master/src/vnr.coffee)
