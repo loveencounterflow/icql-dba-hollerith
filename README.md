@@ -92,9 +92,10 @@
   │all               │[3,2]  │<Buffer 80 00 00 03 80 00 00 02 80 00 00 00 80 00 00 00 80 00 00 00>│
   └──────────────────┴───────┴────────────────────────────────────────────────────────────────────┘
   ```
+
   * observe that all BLOBs in the above are of equal length. This is a restriction of the [`better-sqlite3`
     API](https://github.com/JoshuaWise/better-sqlite3/blob/master/docs/api.md) which sadly is missing a way
-    to define one's own `cmp` functions.
+    to [define one's own collations / `cmp` functions](https://sqlite.org/c3ref/create_collation.html)
 
 
 
