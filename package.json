@@ -1,5 +1,5 @@
 {
-  "name": "icql-dba-vnr",
+  "name": "icql-dba-hollerith",
   "version": "0.0.1",
   "description": "use vectorial numbers (VNRs) in SQLite to allow for arbitrary many interstitial elements",
   "main": "lib/main.js",
@@ -7,11 +7,11 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo see 'https://github.com/loveencounterflow/hengist/tree/master/dev/icql-dba-vnr-legacy'"
+    "test": "echo see 'https://github.com/loveencounterflow/hengist/tree/master/dev/icql-dba-hollerith'"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/loveencounterflow/icql-dba-vnr-legacy.git"
+    "url": "git+https://github.com/loveencounterflow/icql-dba-hollerith.git"
   },
   "keywords": [
     "sql",
@@ -21,12 +21,11 @@
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/loveencounterflow/icql-dba-vnr-legacy/issues"
+    "url": "https://github.com/loveencounterflow/icql-dba-hollerith/issues"
   },
-  "homepage": "https://github.com/loveencounterflow/icql-dba-vnr-legacy#readme",
+  "homepage": "https://github.com/loveencounterflow/icql-dba-hollerith#readme",
   "dependencies": {
     "cnd": "^9.2.2",
-    "datom": "^8.0.3",
     "guy": "^1.0.0",
     "hollerith-codec": "^3.1.1",
     "intertype": "^7.6.7",
