@@ -26,8 +26,7 @@ SQL                       = String.raw
 E                         = require './errors'
 { Dba, }                  = require 'icql-dba'
 guy                       = require 'guy'
-{ HOLLERITH_CODEC, }      = require 'hollerith-codec/lib/tng'
-{ Vnr, }                  = require 'datom/lib/vnr'
+{ Hollerith: Hollerith2, }            = require 'hollerith'
 jr                        = JSON.stringify
 jp                        = JSON.parse
 
@@ -36,7 +35,7 @@ jp                        = JSON.parse
 name_re = /^[^-+:\s!?=\{\[\(<\/>\)\]\}'"]+$/u
 
 #===========================================================================================================
-types.declare 'vnr_constructor_cfg', tests:
+types.declare 'dhlr_constructor_cfg', tests:
   '@isa.object x':                ( x ) -> @isa.object x
   'x.prefix is a prefix':         ( x ) ->
     return false unless @isa.text x.prefix
@@ -46,27 +45,35 @@ types.declare 'vnr_constructor_cfg', tests:
 
 #-----------------------------------------------------------------------------------------------------------
 ### TAINT integrate typing into class so we can uses types from `icql-dba` ###
-types.declare 'vnr_alter_table_cfg', tests:
+types.declare 'dhlr_alter_table_cfg', tests:
   '@isa.object x':                ( x ) -> @isa.object x
 
 #-----------------------------------------------------------------------------------------------------------
 types.defaults =
-  vnr_constructor_cfg:
+  dhlr_constructor_cfg:
     dba:        null
     prefix:     'vnr_'
-  vnr_alter_table_cfg:
+  dhlr_alter_table_cfg:
     schema:               'main'
     table_name:           null
     json_column_name:     null
     blob_column_name:     null
 
 #===========================================================================================================
-class @Vnr extends Vnr
+class @Hollerith # extends Hollerith
 
   #---------------------------------------------------------------------------------------------------------
   constructor: ( cfg ) ->
-    super()
-    validate.vnr_constructor_cfg @cfg = { types.defaults.vnr_constructor_cfg..., cfg..., }
+    ### TAINT must pass Hollerith cfg parameters to super ###
+    # super()
+    @hlr = new Hollerith2()
+    debug '^234^', ( k for k of @hlr )
+    for name, descriptor of Object.getOwnPropertyDescriptors @hlr
+      { value: method, } = descriptor
+      continue unless isa.callable method
+      # debug '^234^', name, method
+      @[ name ] = method
+    validate.dhlr_constructor_cfg @cfg = { types.defaults.dhlr_constructor_cfg..., cfg..., }
     #.......................................................................................................
     guy.props.def @, 'dba', { enumerable: false, value: cfg.dba, }
     delete @cfg.dba
@@ -74,12 +81,12 @@ class @Vnr extends Vnr
     # @_create_db_structure()
     @_compile_sql()
     @_create_sql_functions()
-    @hollerith = freeze {
-      sign_delta:  HOLLERITH_CODEC.sign_delta   # 0x80000000  ### used to lift negative numbers to non-negative ###
-      u32_width:   HOLLERITH_CODEC.u32_width    # 4           ### bytes per element ###
-      vnr_width:   HOLLERITH_CODEC.vnr_width    # 5           ### maximum elements in VNR vector ###
-      nr_min:      HOLLERITH_CODEC.nr_min       # -0x80000000 ### smallest possible VNR element ###
-      nr_max:      HOLLERITH_CODEC.nr_max    }  # +0x7fffffff ### largest possible VNR element ###
+    # @hollerith = freeze {
+    #   sign_delta:  HOLLERITH_CODEC.sign_delta   # 0x80000000  ### used to lift negative numbers to non-negative ###
+    #   u32_width:   HOLLERITH_CODEC.u32_width    # 4           ### bytes per element ###
+    #   vnr_width:   HOLLERITH_CODEC.vnr_width    # 5           ### maximum elements in VNR vector ###
+    #   nr_min:      HOLLERITH_CODEC.nr_min       # -0x80000000 ### smallest possible VNR element ###
+    #   nr_max:      HOLLERITH_CODEC.nr_max    }  # +0x7fffffff ### largest possible VNR element ###
     return undefined
 
   # #---------------------------------------------------------------------------------------------------------
@@ -118,7 +125,7 @@ class @Vnr extends Vnr
     return null
 
   #---------------------------------------------------------------------------------------------------------
-  encode: HOLLERITH_CODEC.encode.bind HOLLERITH_CODEC
+  # encode: HOLLERITH_CODEC.encode.bind HOLLERITH_CODEC
 
   #=========================================================================================================
   #
@@ -127,7 +134,7 @@ class @Vnr extends Vnr
     ### TAINT make `unique` configurable ###
     ### TAINT make `virtual`/`stored` configurable ###
     ### TAINT include table name in index name ###
-    validate.vnr_alter_table_cfg cfg = { types.defaults.vnr_alter_table_cfg..., cfg..., }
+    validate.dhlr_alter_table_cfg cfg = { types.defaults.dhlr_alter_table_cfg..., cfg..., }
     { schema
       table_name
       json_column_name
