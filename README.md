@@ -5,10 +5,23 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [Notes (in lieu of docs)](#notes-in-lieu-of-docs)
-- [To Do](#to-do)
+- [DEPRECATION NOTICE](#deprecation-notice)
+- [Documentation left here for Posterity](#documentation-left-here-for-posterity)
+  - [Notes (in lieu of docs)](#notes-in-lieu-of-docs)
+  - [To Do](#to-do)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
+# DEPRECATION NOTICE
+
+This package has been deprecated; for more see
+
+* [the Future](https://github.com/loveencounterflow/hollerith/blob/master/README-transition.md)
+* that leads to a new major version of [Hollerith](https://github.com/loveencounterflow/hollerith-legacy) and
+  [`icql-dba-hollerith`](https://github.com/loveencounterflow/hollerith-legacy) (TBD)
+
+# Documentation left here for Posterity
 
 ## Notes (in lieu of docs)
 
