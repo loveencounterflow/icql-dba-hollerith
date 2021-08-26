@@ -7,11 +7,11 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo see 'https://github.com/loveencounterflow/hengist/tree/master/dev/icql-dba-vnr'"
+    "test": "echo see 'https://github.com/loveencounterflow/hengist/tree/master/dev/icql-dba-vnr-legacy'"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/loveencounterflow/icql-dba-vnr.git"
+    "url": "git+https://github.com/loveencounterflow/icql-dba-vnr-legacy.git"
   },
   "keywords": [
     "sql",
@@ -21,9 +21,9 @@
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/loveencounterflow/icql-dba-vnr/issues"
+    "url": "https://github.com/loveencounterflow/icql-dba-vnr-legacy/issues"
   },
-  "homepage": "https://github.com/loveencounterflow/icql-dba-vnr#readme",
+  "homepage": "https://github.com/loveencounterflow/icql-dba-vnr-legacy#readme",
   "dependencies": {
     "cnd": "^9.2.2",
     "datom": "^8.0.3",
