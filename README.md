@@ -129,6 +129,9 @@ Future](https://github.com/loveencounterflow/hollerith/blob/master/README-transi
   `u32`, `bcd`); that *serialization* format is associated with a *storage* format (a type name for an
   SQLite column—`text`, `blob` and maybe `json` being the only sane choices). Add field in `Hollerith` for
   that.
+* **[–]** Class constructor `Hollerith` has been defined to embrace types as instance-specific (because some
+  type definitions will depend on instance `cfg` properties (a.k.a. settings)). How can it be made easier to
+  follow that pattern, apply it elsewhere?
 
 
 
