@@ -1,27 +1,24 @@
 
-# ICQL-DBA Plugin: VNR
+# ICQL-DBA Plugin: Hollerith
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-- [DEPRECATION NOTICE](#deprecation-notice)
-- [Documentation left here for Posterity](#documentation-left-here-for-posterity)
+- [Documentation to be updated](#documentation-to-be-updated)
   - [Notes (in lieu of docs)](#notes-in-lieu-of-docs)
   - [To Do](#to-do)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
-# DEPRECATION NOTICE
 
-This package has been deprecated; for more see
+# Documentation to be updated
 
-* [the Future](https://github.com/loveencounterflow/hollerith/blob/master/README-transition.md)
-* that leads to a new major version of [Hollerith](https://github.com/loveencounterflow/hollerith-legacy) and
-  [`icql-dba-hollerith`](https://github.com/loveencounterflow/hollerith-legacy) (TBD)
+This module is the continuation of
+[`icql-dba-legacy`](https://github.com/loveencounterflow/icql-dba-legacy). Also see [the
+Future](https://github.com/loveencounterflow/hollerith/blob/master/README-transition.md).
 
-# Documentation left here for Posterity
 
 ## Notes (in lieu of docs)
 
