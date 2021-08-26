@@ -122,7 +122,13 @@ Future](https://github.com/loveencounterflow/hollerith/blob/master/README-transi
 
 ## To Do
 
-* [ ] documentation
-  * [ ] API
-  * [ ] DB structure
+* **[–]** documentation
+  * **[–]** API
+  * **[–]** DB structure
+* **[–]** when underlying `Hollerith` is constructed, a serialization `format` can be chosen (currently
+  `u32`, `bcd`); that *serialization* format is associated with a *storage* format (a type name for an
+  SQLite column—`text`, `blob` and maybe `json` being the only sane choices). Add field in `Hollerith` for
+  that.
+
+
 
