@@ -71,9 +71,9 @@ acquire_methods = ( source, target ) ->
 
 
 #===========================================================================================================
-class @Hollerith # extends Hollerith
+class @Hollerith
 
-  ### TAINT make constructor work like that in Hollerith, make it a pattern ###
+  ### TAINT make constructor work like that in Hollerith2 ###
 
   #---------------------------------------------------------------------------------------------------------
   constructor: ( cfg ) ->
