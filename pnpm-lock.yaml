@@ -3,7 +3,7 @@ lockfileVersion: 5.3
 specifiers:
   cnd: ^9.2.2
   guy: ^1.0.0
-  hollerith: ^10.0.1
+  hollerith: 11.0.0
   icql-dba: ^8.1.0
   intertype: ^7.6.7
   letsfreezethat: ^3.1.0
@@ -11,7 +11,7 @@ specifiers:
 dependencies:
   cnd: 9.2.2
   guy: 1.0.0
-  hollerith: 10.0.1
+  hollerith: 11.0.0
   intertype: 7.6.7
   letsfreezethat: 3.1.0
 
@@ -204,8 +204,8 @@ packages:
       intertype: 7.6.5
     dev: true
 
-  /hollerith/10.0.1:
-    resolution: {integrity: sha512-FRMlEbv3kuWVTiZE0wPZLu5f0tf9YC8t3jrbssCUsEly33O0+jYJMqNEvR6ofb95GeR9WvIs//zvn3HvfN2akQ==}
+  /hollerith/11.0.0:
+    resolution: {integrity: sha512-BqitG6WFzHgioEFC9TRkbwLgkw38+1PC3pjaCTab9sDGs0VepYaple7J1iYwQRQCgWMU+d52ragNjkjLc9F8cA==}
     dependencies:
       cnd: 9.2.2
       intertype: 7.6.7

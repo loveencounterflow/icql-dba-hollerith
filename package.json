@@ -27,7 +27,7 @@
   "dependencies": {
     "cnd": "^9.2.2",
     "guy": "^1.0.0",
-    "hollerith": "^10.0.1",
+    "hollerith": "11.0.0",
     "intertype": "^7.6.7",
     "letsfreezethat": "^3.1.0"
   },
