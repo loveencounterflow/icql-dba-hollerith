@@ -59,6 +59,15 @@ types.defaults =
     json_column_name:     null
     blob_column_name:     null
 
+#-----------------------------------------------------------------------------------------------------------
+acquire_methods = ( source, target ) ->
+  ### TAINT check for unbound methods ###
+  ### TAINT `intertype.callable()` is incomplete (? no async generator function) ###
+  for name, descriptor of Object.getOwnPropertyDescriptors source
+    { value: method, } = descriptor
+    continue unless isa.callable method
+    target[ name ] = method
+  return null
 #===========================================================================================================
 class @Hollerith # extends Hollerith
 
@@ -67,12 +76,7 @@ class @Hollerith # extends Hollerith
     ### TAINT must pass Hollerith cfg parameters to super ###
     # super()
     @hlr = new Hollerith2()
-    debug '^234^', ( k for k of @hlr )
-    for name, descriptor of Object.getOwnPropertyDescriptors @hlr
-      { value: method, } = descriptor
-      continue unless isa.callable method
-      # debug '^234^', name, method
-      @[ name ] = method
+    acquire_methods @hlr, @
     validate.dhlr_constructor_cfg @cfg = { types.defaults.dhlr_constructor_cfg..., cfg..., }
     #.......................................................................................................
     guy.props.def @, 'dba', { enumerable: false, value: cfg.dba, }
