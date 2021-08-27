@@ -1,6 +1,6 @@
 {
   "name": "icql-dba-hollerith",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "use vectorial numbers (VNRs) in SQLite to allow for arbitrary many interstitial elements",
   "main": "lib/main.js",
   "directories": {
