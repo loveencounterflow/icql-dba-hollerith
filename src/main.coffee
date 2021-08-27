@@ -86,26 +86,9 @@ class @Hollerith # extends Hollerith
     guy.props.def @, 'dba', { enumerable: false, value: cfg.dba, }
     delete @cfg.dba
     @cfg = freeze @cfg
-    # @_create_db_structure()
     @_compile_sql()
     @_create_sql_functions()
-    # @hollerith = freeze {
-    #   sign_delta:  HOLLERITH_CODEC.sign_delta   # 0x80000000  ### used to lift negative numbers to non-negative ###
-    #   u32_width:   HOLLERITH_CODEC.u32_width    # 4           ### bytes per element ###
-    #   vnr_width:   HOLLERITH_CODEC.vnr_width    # 5           ### maximum elements in VNR vector ###
-    #   nr_min:      HOLLERITH_CODEC.nr_min       # -0x80000000 ### smallest possible VNR element ###
-    #   nr_max:      HOLLERITH_CODEC.nr_max    }  # +0x7fffffff ### largest possible VNR element ###
     return undefined
-
-  # #---------------------------------------------------------------------------------------------------------
-  # _create_db_structure: ->
-  #   { prefix } = @cfg
-  #   @dba.execute SQL"""
-  #     create table if not exists #{prefix}variables (
-  #         key     text    not null primary key,
-  #         value   json    not null default 'null' );
-  #     """
-  #   return null
 
   #---------------------------------------------------------------------------------------------------------
   _compile_sql: ->
@@ -118,7 +101,6 @@ class @Hollerith # extends Hollerith
   #---------------------------------------------------------------------------------------------------------
   _create_sql_functions: ->
     prefix  = @cfg.prefix
-    # @f      = {}
     #.......................................................................................................
     @dba.create_function name: prefix + 'advance',      call: ( vnr )           => jr @advance     jp vnr
     @dba.create_function name: prefix + 'recede',       call: ( vnr )           => jr @recede      jp vnr
@@ -128,12 +110,9 @@ class @Hollerith # extends Hollerith
     @dba.create_function name: prefix + 'cmp_total',    call: ( a, b )          =>    @cmp_total   ( jp a ), ( jp b )
     @dba.create_function name: prefix + 'deepen',  varargs: true, call: ( vnr, nr = 0   ) => jr @deepen ( jp vnr ), nr
     @dba.create_function name: prefix + 'new_vnr', varargs: true, call: ( source = null ) => jr @new_vnr jp source
-    # 'sort'
     #.......................................................................................................
     return null
 
-  #---------------------------------------------------------------------------------------------------------
-  # encode: HOLLERITH_CODEC.encode.bind HOLLERITH_CODEC
 
   #=========================================================================================================
   #
