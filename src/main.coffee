@@ -52,7 +52,7 @@ types.declare 'dhlr_alter_table_cfg', tests:
 types.defaults =
   dhlr_constructor_cfg:
     dba:        null
-    prefix:     'vnr_'
+    prefix:     'hlr_'
   dhlr_alter_table_cfg:
     schema:               'main'
     table_name:           null
