@@ -79,7 +79,11 @@ class @Hollerith
   constructor: ( cfg ) ->
     ### TAINT must pass Hollerith cfg parameters to super ###
     # super()
-    @hlr = new Hollerith2()
+    @hlr  = new Hollerith2()
+    ### NOTE for convenience we repeat constants from the associated class; without this, clients would have
+    to write `hlr.hlr.constructor.C` ###
+    @C    = Hollerith2.C
+    ### Also for convenience, we mirror all metods from the associated class to the instance: ###
     acquire_methods @hlr, @
     validate.dhlr_constructor_cfg @cfg = { types.defaults.dhlr_constructor_cfg..., cfg..., }
     #.......................................................................................................
