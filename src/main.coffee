@@ -68,8 +68,12 @@ acquire_methods = ( source, target ) ->
     continue unless isa.callable method
     target[ name ] = method
   return null
+
+
 #===========================================================================================================
 class @Hollerith # extends Hollerith
+
+  ### TAINT make constructor work like that in Hollerith, make it a pattern ###
 
   #---------------------------------------------------------------------------------------------------------
   constructor: ( cfg ) ->
