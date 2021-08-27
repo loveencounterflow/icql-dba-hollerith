@@ -126,8 +126,8 @@ class @Hollerith # extends Hollerith
       blob_column_name }  = cfg
     prefix                = @cfg.prefix
     blob_column_name     ?= json_column_name            + '_blob'
-    blob_index_name_i     = @dba.sql.I blob_column_name + '_idx' ### TAINT make configurable? ###
-    json_index_name_i     = @dba.sql.I json_column_name + '_idx' ### TAINT make configurable? ###
+    blob_index_name_i     = @dba.sql.I prefix + table_name + '_' + blob_column_name + '_idx' ### TAINT make configurable? ###
+    json_index_name_i     = @dba.sql.I prefix + table_name + '_' + json_column_name + '_idx' ### TAINT make configurable? ###
     schema_i              = @dba.sql.I schema
     table_name_i          = @dba.sql.I table_name
     json_column_name_i    = @dba.sql.I json_column_name
