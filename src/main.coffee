@@ -102,12 +102,10 @@ class @Hollerith # extends Hollerith
   _create_sql_functions: ->
     prefix  = @cfg.prefix
     #.......................................................................................................
-    @dba.create_function name: prefix + 'advance',      call: ( vnr )           => jr @advance     jp vnr
-    @dba.create_function name: prefix + 'recede',       call: ( vnr )           => jr @recede      jp vnr
-    @dba.create_function name: prefix + 'encode',       call: ( vnr )           =>    @encode      jp vnr
-    @dba.create_function name: prefix + 'cmp_fair',     call: ( a, b )          =>    @cmp_fair    ( jp a ), ( jp b )
-    @dba.create_function name: prefix + 'cmp_partial',  call: ( a, b )          =>    @cmp_partial ( jp a ), ( jp b )
-    @dba.create_function name: prefix + 'cmp_total',    call: ( a, b )          =>    @cmp_total   ( jp a ), ( jp b )
+    @dba.create_function name: prefix + 'advance',  call: ( vnr )   => jr @advance     jp vnr
+    @dba.create_function name: prefix + 'recede',   call: ( vnr )   => jr @recede      jp vnr
+    @dba.create_function name: prefix + 'encode',   call: ( vnr )   =>    @encode      jp vnr
+    @dba.create_function name: prefix + 'cmp',      call: ( a, b )  =>    @cmp         ( jp a ), ( jp b )
     @dba.create_function name: prefix + 'deepen',  varargs: true, call: ( vnr, nr = 0   ) => jr @deepen ( jp vnr ), nr
     @dba.create_function name: prefix + 'new_vnr', varargs: true, call: ( source = null ) => jr @new_vnr jp source
     #.......................................................................................................
