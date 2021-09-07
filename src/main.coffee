@@ -41,7 +41,8 @@ types.declare 'dhlr_constructor_cfg', tests:
     return false unless @isa.text x.prefix
     return true if x.prefix is ''
     return ( /^[_a-z][_a-z0-9]*$/ ).test x.prefix
-  "( @type_of x.dba ) is 'dba'":  ( x ) -> ( @type_of x.dba ) is 'dba'
+  # "( @type_of x.dba ) is 'dba'":  ( x ) -> ( @type_of x.dba ) is 'dba'
+  "@isa.object x.dba":  ( x ) -> @isa.object x.dba
 
 #-----------------------------------------------------------------------------------------------------------
 ### TAINT integrate typing into class so we can uses types from `icql-dba` ###
