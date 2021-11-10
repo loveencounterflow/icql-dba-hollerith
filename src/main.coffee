@@ -139,8 +139,8 @@ class @Hollerith
     table_name_i          = @dba.sql.I table_name
     json_column_name_i    = @dba.sql.I json_column_name
     blob_column_name_i    = @dba.sql.I blob_column_name
-    info '^333909^', column_names = @_get_column_names  schema_i, table_name
-    info '^333909^', index_names  = @_get_index_names   schema_i
+    column_names          = @_get_column_names  schema_i, table_name
+    index_names           = @_get_index_names   schema_i
     unless json_column_name in column_names
       @dba.execute SQL"""
         alter table #{schema_i}.#{table_name_i}
