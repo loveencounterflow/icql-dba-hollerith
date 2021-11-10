@@ -57,8 +57,8 @@ types.defaults =
   dhlr_alter_table_cfg:
     schema:               'main'
     table_name:           null
-    json_column_name:     null
-    blob_column_name:     null
+    json_column_name:     'vnr'
+    blob_column_name:     'vnr_blob'
 
 #-----------------------------------------------------------------------------------------------------------
 acquire_methods = ( source, target ) ->
@@ -130,29 +130,56 @@ class @Hollerith
       json_column_name
       blob_column_name }  = cfg
     prefix                = @cfg.prefix
-    blob_column_name     ?= json_column_name            + '_blob'
-    blob_index_name_i     = @dba.sql.I prefix + table_name + '_' + blob_column_name + '_idx' ### TAINT make configurable? ###
-    json_index_name_i     = @dba.sql.I prefix + table_name + '_' + json_column_name + '_idx' ### TAINT make configurable? ###
+    blob_column_name     ?= json_column_name + '_blob'
+    blob_index_name       = prefix + table_name + '_' + blob_column_name + '_idx' ### TAINT make configurable? ###
+    blob_index_name_i     = @dba.sql.I blob_index_name
+    json_index_name       = prefix + table_name + '_' + json_column_name + '_idx' ### TAINT make configurable? ###
+    json_index_name_i     = @dba.sql.I json_index_name
     schema_i              = @dba.sql.I schema
     table_name_i          = @dba.sql.I table_name
     json_column_name_i    = @dba.sql.I json_column_name
     blob_column_name_i    = @dba.sql.I blob_column_name
-    @dba.execute SQL"""
-      alter table #{schema_i}.#{table_name_i}
-        add column #{json_column_name_i} json
-        not null;"""
-    @dba.execute SQL"""
-      alter table #{schema_i}.#{table_name_i}
-        add column #{blob_column_name_i} blob
-        generated always as ( #{prefix}encode( #{json_column_name_i} ) )
-        virtual not null;"""
-    @dba.execute SQL"""
-      create unique index #{schema_i}.#{json_index_name_i}
-      on #{table_name_i} ( #{json_column_name_i} );"""
-    @dba.execute SQL"""
-      create unique index #{schema_i}.#{blob_index_name_i}
-      on #{table_name_i} ( #{prefix}encode( #{json_column_name_i} ) );"""
+    info '^333909^', column_names = @_get_column_names  schema_i, table_name
+    info '^333909^', index_names  = @_get_index_names   schema_i
+    unless json_column_name in column_names
+      @dba.execute SQL"""
+        alter table #{schema_i}.#{table_name_i}
+          add column #{json_column_name_i} json
+          not null;"""
+    unless blob_column_name in column_names
+      @dba.execute SQL"""
+        alter table #{schema_i}.#{table_name_i}
+          add column #{blob_column_name_i} blob
+          generated always as ( #{prefix}encode( #{json_column_name_i} ) )
+          virtual not null;"""
+    unless json_index_name in index_names
+      @dba.execute SQL"""
+        create unique index #{schema_i}.#{json_index_name_i}
+        on #{table_name_i} ( #{json_column_name_i} );"""
+    unless blob_index_name in index_names
+      @dba.execute SQL"""
+        create unique index #{schema_i}.#{blob_index_name_i}
+        on #{table_name_i} ( #{prefix}encode( #{json_column_name_i} ) );"""
     return null
+
+  #---------------------------------------------------------------------------------------------------------
+  ### TAINT implement this in dbay ###
+  _get_column_names: ( schema_i, table_name ) ->
+    R = []
+    rows = @dba.prepare SQL"""
+      select name from #{schema_i}.pragma_table_info( $table_name );"""
+    return ( row.name for row from rows.iterate { table_name, } )
+    return R
+
+  #---------------------------------------------------------------------------------------------------------
+  ### TAINT implement this in dbay ###
+  _get_index_names: ( schema_i ) ->
+    R = []
+    rows = @dba.prepare SQL"""
+      select name from #{schema_i}.sqlite_schema where type = 'index';"""
+    return ( row.name for row from rows.iterate() )
+    return R
+
 
 ############################################################################################################
 if module is require.main then do =>
