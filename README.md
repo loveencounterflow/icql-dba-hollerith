@@ -132,6 +132,8 @@ Future](https://github.com/loveencounterflow/hollerith/blob/master/README-transi
 * **[–]** Class constructor `Hollerith` has been defined to embrace types as instance-specific (because some
   type definitions will depend on instance `cfg` properties (a.k.a. settings)). How can it be made easier to
   follow that pattern, apply it elsewhere?
+* **[–]** Offer choice to use a number of columns instead of a JSON array to hold indices; in that case,
+  `vnr_blob` becomes superfluous as sorting can be done directly
 
 
 
